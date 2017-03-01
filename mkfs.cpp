@@ -617,6 +617,9 @@ int mkfs::mkfs_rmdir(std::string dir_name_in) {
 
 int mkfs::mkfs_mkdir(std::vector<std::string> path_in) {
 
+    /* save current */
+    mkfs_dir *tmp = this->cd;
+
     /* search through directory structure starting at cd */
     int i = 0;
     for(i = 0; i < path_in.size() - 1; i++) {
@@ -646,7 +649,11 @@ int mkfs::mkfs_mkdir(std::vector<std::string> path_in) {
         }
     }
 
+    /* make directory */
     this->mkfs_mkdir(path_in[i]);
+
+    /* reset current directory */
+    this->cd = tmp;
 
     /* successfully created directory */
     return 1;
@@ -654,6 +661,9 @@ int mkfs::mkfs_mkdir(std::vector<std::string> path_in) {
 
 int mkfs::mkfs_rmdir(std::vector<std::string> path_in) {
 
+    /* save current */
+    mkfs_dir *tmp = this->cd;
+
     /* search through directory structure starting at cd */
     int i = 0;
     for(i = 0; i < path_in.size() - 1; i++) {
@@ -683,7 +693,11 @@ int mkfs::mkfs_rmdir(std::vector<std::string> path_in) {
         }
     }
 
+    /* remove directory */
     this->mkfs_rmdir(path_in[i]);
+
+    /* reset current directory */
+    this->cd = tmp;
 
     /* successfully created directory */
     return 1;
