@@ -81,6 +81,9 @@ public:
     /* remove dir from current directory */
     int mkfs_rmdir(std::string dir_name_in);
 
+    /* remove dir from current directory */
+    int mkfs_rmdir(std::vector<std::string> path_in);
+
     /* get the next file descriptor id */
     int get_next_fd();
 
