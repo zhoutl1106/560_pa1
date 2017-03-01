@@ -411,7 +411,7 @@ std::string mkfs::mkfs_read(int fd_in, int size_in) {
     fread(buff, sizeof(char), size_in, this->file_system);
 
     /* set null char */
-    //buff[size_in] = '\0';
+    buff[size_in] = '\0';
 
     /* set seek ptr in file structure */
     current->setLoc(current->getLoc() + size_in);
