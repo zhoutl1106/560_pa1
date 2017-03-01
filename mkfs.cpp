@@ -165,10 +165,13 @@ void mkfs::processCmd(string line){
         /* check number of arguments */
         if (parse.size() != 2)
             std::cout << "Error: Expected directory name as a parameter.\n";
-        else if(this->mkfs_mkdir(parse[1]) != -1)
-            std::cout << "SUCCESS: directory created.\n";
-        else
-            std::cout << "Error: directory '" << parse[1] << "' already exists in current directory!\n";
+        else {
+            std::vector<std::string> path = split(parse[1], '/');
+            if(this->mkfs_mkdir(path) != -1)
+                std::cout << "SUCCESS: created director\n";
+            else
+                std::cout << "Error: failed to create directory\n";
+        }
     }
     else if(parse[0].compare("rmdir") == 0) { /* RMDIR */
 
@@ -595,4 +598,42 @@ int mkfs::mkfs_rmdir(std::string dir_name_in) {
     }
 
     return -1;
+}
+
+int mkfs::mkfs_mkdir(std::vector<std::string> path_in) {
+
+    /* search through directory structure starting at cd */
+    int i = 0;
+    for(i = 0; i < path_in.size() - 1; i++) {
+
+        /* if cd has a parent then go to parent */
+        if(path_in[i].compare("..") == 0 && this->cd->get_parent() != NULL) {
+            this->cd = this->cd->get_parent();
+            return 1;
+        }
+        else if(path_in[i].compare(".") != 0) {
+
+            /* flag indicating if all directories exist */
+            bool exist = false;
+
+            /* search through current directory for the base directory name */
+            for(int j = 0; j < this->cd->getDirs().size(); j++) {
+
+                /* check if we find the directory */
+                if (this->cd->getDirs()[j]->get_base_name().compare(path_in[i]) == 0) {
+                    this->cd = this->cd->getDirs()[j];
+                    exist = true;
+                    break;
+                }
+            }
+            /* incorrect path so bail */
+            if(exist == false)
+                return -1;
+        }
+    }
+
+    this->mkfs_mkdir(path_in[i]);
+
+    /* successfully created directory */
+    return 1;
 }

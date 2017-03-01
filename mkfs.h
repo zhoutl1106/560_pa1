@@ -54,6 +54,9 @@ public:
     /* make sub directory in current directory */
     int mkfs_mkdir(std::string dir_name_in);
 
+    /* make sub directory in current directory */
+    int mkfs_mkdir(std::vector<std::string> path_in);
+
     /* change to new directory */
     int mkfs_cd(std::vector<std::string> path_in);
 
