@@ -193,7 +193,7 @@ void mkfs::processCmd(string line){
             if(this->mkfs_cd(path) != -1)
                 std::cout << "SUCCESS\n";
             else
-                std::cout << "Error: not in current directory!\n";
+                std::cout << "Error: already at correct directory!\n";
         }
     }
     else if(parse[0].compare("ls") == 0) { /* LS */
@@ -458,23 +458,29 @@ int mkfs::mkfs_cd(std::vector<std::string> path_in ) {
     /* search through directory structure starting at cd */
     for(int i = 0; i < path_in.size(); i++) {
 
+        /* flag indicating if all directories exist */
+        bool exist = false;
+
         /* if cd has a parent then go to parent */
         if(path_in[i].compare("..") == 0 && this->cd->get_parent() != NULL) {
             this->cd = this->cd->get_parent();
-            return 1;
+            exist = true;
         }
         else if(path_in[i].compare(".") != 0) {
             /* search through current directory for the base directory name */
             for(int j = 0; j < this->cd->getDirs().size(); j++)
                 if(this->cd->getDirs()[j]->get_base_name().compare(path_in[i]) == 0) {
                     this->cd = this->cd->getDirs()[j];
-                    return 1;
+                    exist = true;
                 }
         }
+
+        if(exist == false)
+            return -1;
     }
 
-    /* couldn't find directory */
-    return -1;
+    /* found directory */
+    return 1;
 }
 
 void mkfs::mkfs_ls() {
@@ -609,7 +615,6 @@ int mkfs::mkfs_mkdir(std::vector<std::string> path_in) {
         /* if cd has a parent then go to parent */
         if(path_in[i].compare("..") == 0 && this->cd->get_parent() != NULL) {
             this->cd = this->cd->get_parent();
-            return 1;
         }
         else if(path_in[i].compare(".") != 0) {
 
