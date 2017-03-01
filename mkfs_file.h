@@ -50,7 +50,7 @@ public:
     long long getSize() { return this->size; }
 
     /* reset fd and seek location in the file */
-    void close() { this->fd = -1; this->loc = 0; this->setStatus(mkfs_file_status::CLOSED); }
+    void close() { this->fd = -1; this->loc = 0; this->setStatus(CLOSED); }
 
 private:
 

@@ -92,9 +92,9 @@ void mkfs::processCmd(string line){
         else if(parse[2].compare("r") != 0 && parse[2].compare("w") != 0)
             std::cout << "Error: Invalid flag.\n";
         else if(parse[2].compare("r") == 0)
-            fd = this->mkfs_open(parse[1], mkfs_file_status::OPEN_READ);
+            fd = this->mkfs_open(parse[1], OPEN_READ);
         else
-            fd = this->mkfs_open(parse[1], mkfs_file_status::OPEN_WRITE);
+            fd = this->mkfs_open(parse[1], OPEN_WRITE);
 
         /* check for success */
         if(fd != -1)
@@ -314,7 +314,7 @@ int mkfs::mkfs_write(int fd_in, std::string data_in) {
     /* get ptr to file structure */
     mkfs_file *current = this->fd_map[fd_in];
 
-    if(current->getStatus() == mkfs_file_status::OPEN_READ) {
+    if(current->getStatus() == OPEN_READ) {
         std::cout << "Error: file is open for read only. Cannot write.\n";
         return -1;
     }
@@ -515,7 +515,7 @@ int mkfs::mkfs_cat(std::string file_name_in) {
 
     for(int i = 0; i < this->cd->getFiles().size(); i++) {
         if(this->cd->getFiles()[i]->getFname().compare(file_name_in) == 0) {
-            int fd = this->mkfs_open(file_name_in, mkfs_file_status::OPEN_READ);
+            int fd = this->mkfs_open(file_name_in, OPEN_READ);
             std::cout << this->mkfs_read(fd, this->cd->getFiles()[i]->getSize()) << std::endl;
             this->mkfs_close(fd);
             return 1;
@@ -542,7 +542,7 @@ int mkfs::mkfs_import(std::string src, std::string dest) {
     fclose(src_f);
 
     /* make new file structure */
-    int fd = this->mkfs_open(dest, mkfs_file_status::OPEN_WRITE);
+    int fd = this->mkfs_open(dest, OPEN_WRITE);
 
     /* write it to file system */
     this->mkfs_write(fd, std::string(buff));
@@ -556,7 +556,7 @@ int mkfs::mkfs_import(std::string src, std::string dest) {
 int mkfs::mkfs_export(std::string src, std::string dest) {
 
     /* open local file and read in data */
-    int fd = this->mkfs_open(src, mkfs_file_status::OPEN_READ);
+    int fd = this->mkfs_open(src, OPEN_READ);
     std::string src_data = this->mkfs_read(fd, this->fd_map[fd]->getSize());
     this->mkfs_close(fd);
 
