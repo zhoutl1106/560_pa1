@@ -1,0 +1,3 @@
+/Users/zhoutianli/src/mkfs/CMakeFiles/edit_cache.dir
+/Users/zhoutianli/src/mkfs/CMakeFiles/rebuild_cache.dir
+/Users/zhoutianli/src/mkfs/CMakeFiles/mkfs.dir

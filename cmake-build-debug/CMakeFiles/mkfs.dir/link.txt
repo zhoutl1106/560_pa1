@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/mkfs.dir/main.cpp.o CMakeFiles/mkfs.dir/mkfs.cpp.o CMakeFiles/mkfs.dir/mkfs_file.cpp.o CMakeFiles/mkfs.dir/utils.cpp.o CMakeFiles/mkfs.dir/mkfs_dir.cpp.o  -o mkfs 
